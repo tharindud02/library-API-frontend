@@ -1,12 +1,8 @@
 import { Inter } from "next/font/google";
-import BookList from "@/components/bookList";
+import SideMenu from "@/components/shared/asideMenu";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  return (
-    <main>
-      <BookList />
-    </main>
-  );
+  return <main></main>;
 }
