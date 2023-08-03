@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillCloseSquare, AiOutlineCloseCircle } from "react-icons/ai";
 import api from "../services/api";
 
-export default function AddBook({ authors, onClose }) {
+export default function AddBook({ authors, onClose, initialData }) {
   const [formData, setFormData] = useState({
     name: "",
     isbn: "",
     author: "",
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name || "",
+        isbn: initialData.isbn || "",
+        author: initialData.author || "",
+      });
+    }
+  }, [initialData]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -17,17 +27,35 @@ export default function AddBook({ authors, onClose }) {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    createBook();
+    try {
+      if (initialData) {
+        await updateBook();
+      } else {
+        await createBook();
+      }
+      onClose();
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   async function createBook() {
     try {
       const response = await api.post("/book", formData);
-      onClose();
+      console.log("Book created:", response.data);
     } catch (error) {
-      console.error("Error fetching books:", error);
+      console.error("Error creating book:", error);
+    }
+  }
+
+  async function updateBook() {
+    try {
+      const response = await api.put(`/book/${initialData._id}`, formData);
+      console.log("Book updated:", response.data);
+    } catch (error) {
+      console.error("Error updating book:", error);
     }
   }
 
@@ -44,7 +72,9 @@ export default function AddBook({ authors, onClose }) {
               <AiOutlineCloseCircle />
             </button>
           </div>
-          <h2 className="text-xl font-bold mb-4">Add a Book</h2>
+          <h2 className="text-xl font-bold mb-4">
+            {initialData ? "Update" : "Add"} a Book
+          </h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
@@ -97,7 +127,7 @@ export default function AddBook({ authors, onClose }) {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full"
             >
-              Add Book
+              {initialData ? "Update" : "Add"} Book
             </button>
           </form>
         </div>

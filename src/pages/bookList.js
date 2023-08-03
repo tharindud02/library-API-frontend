@@ -18,7 +18,7 @@ export default function BookList() {
   }
 
   return (
-    <div className="flex flex-wrap justify-between">
+    <div className="flex flex-wrap justify-start">
       {books.length > 0 &&
         books.map((book, index) => {
           return (

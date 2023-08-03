@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiFillCloseSquare, AiOutlineCloseCircle } from "react-icons/ai";
 import api from "../services/api";
 
-export default function AddAuthor({ onClose }) {
+export default function AddAuthor({ onClose, initialData }) {
+  const isUpdate = !!initialData;
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        first_name: initialData.first_name || "",
+        last_name: initialData.last_name || "",
+      });
+    }
+  }, [initialData]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -16,17 +27,35 @@ export default function AddAuthor({ onClose }) {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    createAuthor();
+    try {
+      if (isUpdate) {
+        await updateAuthor();
+      } else {
+        await createAuthor();
+      }
+      onClose();
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   async function createAuthor() {
     try {
       const response = await api.post("/author", formData);
-      onClose();
+      console.log("Author created:", response.data);
     } catch (error) {
-      console.error("Error fetching books:", error);
+      console.error("Error creating author:", error);
+    }
+  }
+
+  async function updateAuthor() {
+    try {
+      const response = await api.put(`/author/${initialData._id}`, formData);
+      console.log("Author updated:", response.data);
+    } catch (error) {
+      console.error("Error updating author:", error);
     }
   }
 
@@ -43,7 +72,9 @@ export default function AddAuthor({ onClose }) {
               <AiOutlineCloseCircle />
             </button>
           </div>
-          <h2 className="text-xl font-bold mb-4">Add an Author</h2>
+          <h2 className="text-xl font-bold mb-4">
+            {isUpdate ? "Update" : "Add"} an Author
+          </h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
@@ -75,7 +106,7 @@ export default function AddAuthor({ onClose }) {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full"
             >
-              Add Author
+              {isUpdate ? "Update" : "Add"} Author
             </button>
           </form>
         </div>

@@ -13,7 +13,7 @@ export default function BookCard({ bookDetails }) {
   }, [bookDetails]);
   return (
     <div>
-      <div className="w-[200px] rounded overflow-hidden shadow-lg">
+      <div className="w-[200px] min-h-[300px] rounded overflow-hidden shadow-lg flex flex-col justify-evenly">
         <img
           className="w-full"
           src="/img/card-top.jpg"
@@ -29,7 +29,7 @@ export default function BookCard({ bookDetails }) {
             <button onClick={() => setShowPopup(true)}>{authorName}</button>
           </p>
         </div>
-        <div className="flex justify-center  px-6 pt-4 pb-2">
+        <div className="flex justify-center px-6 pt-4 pb-2">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
             onClick={() => setShowPopup(true)}
@@ -38,6 +38,7 @@ export default function BookCard({ bookDetails }) {
           </button>
         </div>
       </div>
+
       {showPopup && (
         <BookDetailsPopup
           bookDetails={bookDetails}

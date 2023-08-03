@@ -10,6 +10,8 @@ export default function UpdateDetails() {
   const [showPopupAddAuthor, setShowPopupAddAuthor] = useState(false);
   const [books, setBooks] = useState([]);
   const [authors, setAuthors] = useState([]);
+  const [selectedBookData, setSelectedBookData] = useState();
+  const [selectedAuthorData, setSelectedAuthorData] = useState();
 
   useEffect(() => {
     fetchBooks();
@@ -64,17 +66,26 @@ export default function UpdateDetails() {
                   <div className="flex space-x-2">
                     <button
                       className="text-blue-500 hover:text-blue-700"
-                      data-tip="Edit"
+                      data-tooltip-id="tooltip"
+                      data-tooltip-content="Edit Book"
+                      onClick={() => {
+                        setSelectedBookData(book);
+                        setShowPopupAddBook(true);
+                      }}
                     >
                       <RiEdit2Line />
                     </button>
                     <button
                       className="text-red-500 hover:text-red-700"
-                      data-tip="Delete"
+                      data-tooltip-id="tooltip"
+                      data-tooltip-content="Delete Book"
+                      onClick={() => {
+                        setSelectedBookData(book);
+                        setShowPopupAddBook(true);
+                      }}
                     >
                       <RiDeleteBinLine />
                     </button>
-                    <Tooltip effect="solid" place="bottom" />
                   </div>
                 </li>
               ))}
@@ -93,17 +104,26 @@ export default function UpdateDetails() {
                   <div className="flex space-x-2">
                     <button
                       className="text-blue-500 hover:text-blue-700"
-                      data-tip="Edit"
+                      data-tooltip-id="tooltip"
+                      data-tooltip-content="Edit Author"
+                      onClick={() => {
+                        setSelectedAuthorData(author);
+                        setShowPopupAddAuthor(true);
+                      }}
                     >
                       <RiEdit2Line />
                     </button>
                     <button
                       className="text-red-500 hover:text-red-700"
-                      data-tip="Delete"
+                      data-tooltip-id="tooltip"
+                      data-tooltip-content="Delete Author"
+                      onClick={() => {
+                        setSelectedAuthorData(author);
+                        setShowPopupAddAuthor(true);
+                      }}
                     >
                       <RiDeleteBinLine />
                     </button>
-                    <Tooltip effect="solid" place="bottom" />
                   </div>
                 </li>
               ))}
@@ -113,20 +133,25 @@ export default function UpdateDetails() {
       {showPopupAddBook && (
         <AddBook
           authors={authors}
+          initialData={selectedBookData}
           onClose={() => {
             setShowPopupAddBook(false);
+            setSelectedBookData("");
             fetchBooks();
           }}
         />
       )}
       {showPopupAddAuthor && (
         <AddAuthor
+          initialData={selectedAuthorData}
           onClose={() => {
             setShowPopupAddAuthor(false);
+            setSelectedAuthorData("");
             fetchAuthors();
           }}
         />
       )}
+      <Tooltip id="tooltip" />
     </div>
   );
 }
