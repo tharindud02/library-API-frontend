@@ -13,7 +13,7 @@ export default function BookCard({ bookDetails }) {
   }, [bookDetails]);
   return (
     <div>
-      <div className="max-w-sm rounded overflow-hidden shadow-lg">
+      <div className="w-[200px] rounded overflow-hidden shadow-lg">
         <img
           className="w-full"
           src="/img/card-top.jpg"

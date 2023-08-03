@@ -4,8 +4,8 @@ const sideMenu = [
     url: "/bookList",
   },
   {
-    name: "Author List",
-    url: "/authorList",
+    name: "Update Details",
+    url: "/updateDetails",
   },
 ];
 
