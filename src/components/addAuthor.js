@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { AiFillCloseSquare, AiOutlineCloseCircle } from "react-icons/ai";
 import api from "../services/api";
 
-export default function AddBook({ authors, onClose }) {
+export default function AddAuthor({ onClose }) {
   const [formData, setFormData] = useState({
-    name: "",
-    isbn: "",
-    author: "",
+    first_name: "",
+    last_name: "",
   });
 
   const handleInputChange = (event) => {
@@ -19,12 +18,12 @@ export default function AddBook({ authors, onClose }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createBook();
+    createAuthor();
   };
 
-  async function createBook() {
+  async function createAuthor() {
     try {
-      const response = await api.post("/book", formData);
+      const response = await api.post("/author", formData);
       onClose();
     } catch (error) {
       console.error("Error fetching books:", error);
@@ -44,16 +43,16 @@ export default function AddBook({ authors, onClose }) {
               <AiOutlineCloseCircle />
             </button>
           </div>
-          <h2 className="text-xl font-bold mb-4">Add a Book</h2>
+          <h2 className="text-xl font-bold mb-4">Add an Author</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                Name
+                First Name
               </label>
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                name="first_name"
+                value={formData.first_name}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-md border-gray-400 focus:outline-none focus:border-blue-500"
                 required
@@ -61,43 +60,22 @@ export default function AddBook({ authors, onClose }) {
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                ISBN
+                Last Name
               </label>
               <input
                 type="text"
-                name="isbn"
-                value={formData.isbn}
+                name="last_name"
+                value={formData.last_name}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-md border-gray-400 focus:outline-none focus:border-blue-500"
                 required
               />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-semibold mb-2">
-                Author
-              </label>
-              <select
-                name="author"
-                value={formData.author}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border rounded-md border-gray-400 focus:outline-none focus:border-blue-500"
-                required
-              >
-                <option value="" disabled>
-                  Select an author
-                </option>
-                {authors.map((author) => (
-                  <option key={author._id} value={author._id}>
-                    {author.first_name} {author.last_name}
-                  </option>
-                ))}
-              </select>
             </div>
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full"
             >
-              Add Book
+              Add Author
             </button>
           </form>
         </div>
