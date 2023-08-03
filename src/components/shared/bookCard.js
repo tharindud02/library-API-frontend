@@ -13,12 +13,17 @@ export default function BookCard({ bookDetails }) {
   }, [bookDetails]);
   return (
     <div>
-      <div className="w-[200px] min-h-[300px] rounded overflow-hidden shadow-lg flex flex-col justify-evenly">
+      <div className="w-[250px] min-h-[300px] rounded overflow-hidden shadow-lg flex flex-col justify-evenly">
         <img
           className="w-full"
           src="/img/card-top.jpg"
           alt="Book Cover Image"
+          onError={(e) => {
+            e.target.src =
+              "https://imgs.search.brave.com/oB6fgT45DC10B0RQfk3kTBtZ0W-2p7udZUxPnfvKT3M/rs:fit:860:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzA0LzYyLzkzLzY2/LzM2MF9GXzQ2Mjkz/NjY4OV9CcEVFY3hm/Z011WVBmVGFJQU9D/MXRDRHVybXNubzdT/cC5qcGc";
+          }}
         />
+
         <div className="px-6 py-4">
           <div className="font-bold text-xl mb-2">
             <button onClick={() => setShowPopup(true)}>

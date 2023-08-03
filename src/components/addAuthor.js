@@ -66,10 +66,10 @@ export default function AddAuthor({ onClose, initialData }) {
         <div className="bg-white w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 md:p-6 rounded-lg shadow-lg">
           <div className="flex justify-end">
             <button
-              className="text-gray-700 hover:text-gray-900"
+              className="text-gray-700 hover:text-gray-900 focus:outline-none"
               onClick={onClose}
             >
-              <AiOutlineCloseCircle />
+              <AiOutlineCloseCircle className="text-2xl" />
             </button>
           </div>
           <h2 className="text-xl font-bold mb-4">

@@ -66,10 +66,10 @@ export default function AddBook({ authors, onClose, initialData }) {
         <div className="bg-white w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 md:p-6 rounded-lg shadow-lg">
           <div className="flex justify-end">
             <button
-              className="text-gray-700 hover:text-gray-900"
+              className="text-gray-700 hover:text-gray-900 focus:outline-none"
               onClick={onClose}
             >
-              <AiOutlineCloseCircle />
+              <AiOutlineCloseCircle className="text-2xl" />
             </button>
           </div>
           <h2 className="text-xl font-bold mb-4">
@@ -83,6 +83,7 @@ export default function AddBook({ authors, onClose, initialData }) {
               <input
                 type="text"
                 name="name"
+                placeholder="Abcd"
                 value={formData.name}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-md border-gray-400 focus:outline-none focus:border-blue-500"
@@ -96,6 +97,7 @@ export default function AddBook({ authors, onClose, initialData }) {
               <input
                 type="text"
                 name="isbn"
+                placeholder="978-3-16-148410-0"
                 value={formData.isbn}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-md border-gray-400 focus:outline-none focus:border-blue-500"

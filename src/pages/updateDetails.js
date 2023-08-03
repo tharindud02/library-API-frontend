@@ -4,6 +4,7 @@ import api from "../services/api";
 import React, { useEffect, useState } from "react";
 import { RiDeleteBinLine, RiEdit2Line } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
+import ConfirmModal from "@/components/shared/confirmModal";
 
 export default function UpdateDetails() {
   const [showPopupAddBook, setShowPopupAddBook] = useState(false);
@@ -12,11 +13,37 @@ export default function UpdateDetails() {
   const [authors, setAuthors] = useState([]);
   const [selectedBookData, setSelectedBookData] = useState();
   const [selectedAuthorData, setSelectedAuthorData] = useState();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [delConfirmMessage, setDelConfirmMessage] = useState();
+  const [deleteType, setDeleteType] = useState("");
 
   useEffect(() => {
     fetchBooks();
     fetchAuthors();
   }, []);
+
+  const handleDelete = (type, id) => {
+    setDelConfirmMessage(
+      type === "book"
+        ? "Are you sure you want to delete this book?"
+        : "Are you sure you want to delete this author?"
+    );
+    setDeleteType(type);
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteType === "book") {
+      deleteBook(selectedBookData._id);
+    } else if (deleteType === "author") {
+      deleteAuthor(selectedAuthorData._id);
+    }
+    setShowConfirmModal(false);
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirmModal(false);
+  };
 
   async function fetchBooks() {
     try {
@@ -33,6 +60,26 @@ export default function UpdateDetails() {
       setAuthors(response.data);
     } catch (error) {
       console.error("Error fetching authors:", error);
+    }
+  }
+
+  async function deleteBook(id) {
+    try {
+      await api.delete(`/book/${id}`);
+      fetchBooks();
+      setSelectedBookData("");
+    } catch (error) {
+      console.error("Error deleting book:", error);
+    }
+  }
+
+  async function deleteAuthor(id) {
+    try {
+      await api.delete(`/author/${id}`);
+      fetchAuthors();
+      setSelectedAuthorData("");
+    } catch (error) {
+      console.error("Error deleting author:", error);
     }
   }
 
@@ -80,8 +127,8 @@ export default function UpdateDetails() {
                       data-tooltip-id="tooltip"
                       data-tooltip-content="Delete Book"
                       onClick={() => {
+                        handleDelete("book", book._id);
                         setSelectedBookData(book);
-                        setShowPopupAddBook(true);
                       }}
                     >
                       <RiDeleteBinLine />
@@ -118,8 +165,8 @@ export default function UpdateDetails() {
                       data-tooltip-id="tooltip"
                       data-tooltip-content="Delete Author"
                       onClick={() => {
+                        handleDelete("author", author._id);
                         setSelectedAuthorData(author);
-                        setShowPopupAddAuthor(true);
                       }}
                     >
                       <RiDeleteBinLine />
@@ -149,6 +196,13 @@ export default function UpdateDetails() {
             setSelectedAuthorData("");
             fetchAuthors();
           }}
+        />
+      )}
+      {showConfirmModal && (
+        <ConfirmModal
+          message={delConfirmMessage}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
         />
       )}
       <Tooltip id="tooltip" />
