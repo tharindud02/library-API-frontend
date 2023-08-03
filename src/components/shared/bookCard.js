@@ -11,11 +11,12 @@ export default function BookCard({ bookDetails }) {
       bookDetails.author.first_name + " " + bookDetails.author.last_name;
     setAuthorName(authorName);
   }, [bookDetails]);
+
   return (
-    <div>
-      <div className="w-[250px] min-h-[300px] rounded overflow-hidden shadow-lg flex flex-col justify-evenly">
+    <div className="w-full px-2">
+      <div className="bg-white rounded overflow-hidden shadow-lg">
         <img
-          className="w-full"
+          className="w-full h-48 object-cover"
           src="/img/card-top.jpg"
           alt="Book Cover Image"
           onError={(e) => {
@@ -24,19 +25,15 @@ export default function BookCard({ bookDetails }) {
           }}
         />
 
-        <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">
-            <button onClick={() => setShowPopup(true)}>
-              {bookDetails.name}
-            </button>
-          </div>
-          <p className="text-gray-700 text-base">
-            <button onClick={() => setShowPopup(true)}>{authorName}</button>
-          </p>
+        <div className="px-4 py-3">
+          <h2 className="font-bold text-lg mb-2 truncate">
+            {bookDetails.name}
+          </h2>
+          <p className="text-gray-700 text-sm truncate">{authorName}</p>
         </div>
-        <div className="flex justify-center px-6 pt-4 pb-2">
+        <div className="flex justify-center p-4">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full sm:w-32"
             onClick={() => setShowPopup(true)}
           >
             See More

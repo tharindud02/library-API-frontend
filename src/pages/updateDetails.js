@@ -3,7 +3,6 @@ import AddBook from "@/components/addBook";
 import api from "../services/api";
 import React, { useEffect, useState } from "react";
 import { RiDeleteBinLine, RiEdit2Line } from "react-icons/ri";
-import { Tooltip } from "react-tooltip";
 import ConfirmModal from "@/components/shared/confirmModal";
 import { toast } from "react-toastify";
 
@@ -88,21 +87,22 @@ export default function UpdateDetails() {
 
   return (
     <div className="p-4">
-      <div className="flex justify-end space-x-4 mb-4">
+      <div className="flex flex-col md:flex-row md:justify-end space-y-2 md:space-y-0 space-x-0 md:space-x-4 mb-4">
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 md:w-auto w-full"
           onClick={() => setShowPopupAddBook(true)}
         >
           Add a Book
         </button>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 md:w-auto w-full"
           onClick={() => setShowPopupAddAuthor(true)}
         >
           Add an Author
         </button>
       </div>
-      <div className="flex space-x-8">
+
+      <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-8">
         <div className="flex-grow">
           <h2 className="text-xl font-bold mb-4">Books List</h2>
           <ul className="space-y-4">
@@ -116,8 +116,6 @@ export default function UpdateDetails() {
                   <div className="flex space-x-2">
                     <button
                       className="text-blue-500 hover:text-blue-700"
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Edit Book"
                       onClick={() => {
                         setSelectedBookData(book);
                         setShowPopupAddBook(true);
@@ -127,8 +125,6 @@ export default function UpdateDetails() {
                     </button>
                     <button
                       className="text-red-500 hover:text-red-700"
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Delete Book"
                       onClick={() => {
                         handleDelete("book", book._id);
                         setSelectedBookData(book);
@@ -154,8 +150,6 @@ export default function UpdateDetails() {
                   <div className="flex space-x-2">
                     <button
                       className="text-blue-500 hover:text-blue-700"
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Edit Author"
                       onClick={() => {
                         setSelectedAuthorData(author);
                         setShowPopupAddAuthor(true);
@@ -165,8 +159,6 @@ export default function UpdateDetails() {
                     </button>
                     <button
                       className="text-red-500 hover:text-red-700"
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Delete Author"
                       onClick={() => {
                         handleDelete("author", author._id);
                         setSelectedAuthorData(author);
@@ -208,7 +200,6 @@ export default function UpdateDetails() {
           onCancel={handleCancelDelete}
         />
       )}
-      <Tooltip id="tooltip" />
     </div>
   );
 }

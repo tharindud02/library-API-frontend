@@ -13,7 +13,7 @@ export default function BookList() {
       const response = await api.get("/books");
       setBooks(response.data);
     } catch (error) {
-      console.error("Error fetching books:", error);
+      toast.error(error.message);
     }
   }
 
