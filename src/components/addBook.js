@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AiFillCloseSquare, AiOutlineCloseCircle } from "react-icons/ai";
 import api from "../services/api";
+import { toast } from "react-toastify";
 
 export default function AddBook({ authors, onClose, initialData }) {
   const [formData, setFormData] = useState({
@@ -37,25 +38,29 @@ export default function AddBook({ authors, onClose, initialData }) {
       }
       onClose();
     } catch (error) {
-      console.error("Error:", error);
+      toast.error(error.message);
     }
   };
 
   async function createBook() {
     try {
       const response = await api.post("/book", formData);
-      console.log("Book created:", response.data);
+      if (response.data) {
+        toast.success("Book Created Successful");
+      }
     } catch (error) {
-      console.error("Error creating book:", error);
+      toast.error(error.message);
     }
   }
 
   async function updateBook() {
     try {
       const response = await api.put(`/book/${initialData._id}`, formData);
-      console.log("Book updated:", response.data);
+      if (response.data) {
+        toast.success("Book Details Updated");
+      }
     } catch (error) {
-      console.error("Error updating book:", error);
+      toast.error(error.message);
     }
   }
 

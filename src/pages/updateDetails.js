@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { RiDeleteBinLine, RiEdit2Line } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
 import ConfirmModal from "@/components/shared/confirmModal";
+import { toast } from "react-toastify";
 
 export default function UpdateDetails() {
   const [showPopupAddBook, setShowPopupAddBook] = useState(false);
@@ -50,7 +51,7 @@ export default function UpdateDetails() {
       const response = await api.get("/books");
       setBooks(response.data);
     } catch (error) {
-      console.error("Error fetching books:", error);
+      toast.error(error.message);
     }
   }
 
@@ -59,7 +60,7 @@ export default function UpdateDetails() {
       const response = await api.get("/authors");
       setAuthors(response.data);
     } catch (error) {
-      console.error("Error fetching authors:", error);
+      toast.error(error.message);
     }
   }
 
@@ -68,8 +69,9 @@ export default function UpdateDetails() {
       await api.delete(`/book/${id}`);
       fetchBooks();
       setSelectedBookData("");
+      toast.success("Book Deleted");
     } catch (error) {
-      console.error("Error deleting book:", error);
+      toast.error(error.message);
     }
   }
 
@@ -78,8 +80,9 @@ export default function UpdateDetails() {
       await api.delete(`/author/${id}`);
       fetchAuthors();
       setSelectedAuthorData("");
+      toast.success("Author Deleted");
     } catch (error) {
-      console.error("Error deleting author:", error);
+      toast.error(error.message);
     }
   }
 

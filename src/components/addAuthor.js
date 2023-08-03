@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiFillCloseSquare, AiOutlineCloseCircle } from "react-icons/ai";
 import api from "../services/api";
+import { toast } from "react-toastify";
 
 export default function AddAuthor({ onClose, initialData }) {
   const isUpdate = !!initialData;
@@ -37,25 +38,25 @@ export default function AddAuthor({ onClose, initialData }) {
       }
       onClose();
     } catch (error) {
-      console.error("Error:", error);
+      toast.error(error.message);
     }
   };
 
   async function createAuthor() {
     try {
       const response = await api.post("/author", formData);
-      console.log("Author created:", response.data);
+      if (response.data) toast.success("Author Create Successful");
     } catch (error) {
-      console.error("Error creating author:", error);
+      toast.error(error.message);
     }
   }
 
   async function updateAuthor() {
     try {
       const response = await api.put(`/author/${initialData._id}`, formData);
-      console.log("Author updated:", response.data);
+      if (response.data) toast.success("Author Details Updated");
     } catch (error) {
-      console.error("Error updating author:", error);
+      toast.error(error.message);
     }
   }
 
