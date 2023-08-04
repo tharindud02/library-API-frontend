@@ -87,6 +87,7 @@ export default function AddBook({ authors, onClose, initialData }) {
               </label>
               <input
                 type="text"
+                aria-labelledby="name"
                 name="name"
                 placeholder="Abcd"
                 value={formData.name}
@@ -102,6 +103,7 @@ export default function AddBook({ authors, onClose, initialData }) {
               <input
                 type="text"
                 name="isbn"
+                aria-labelledby="isbn"
                 placeholder="978-3-16-148410-0"
                 value={formData.isbn}
                 onChange={handleInputChange}
