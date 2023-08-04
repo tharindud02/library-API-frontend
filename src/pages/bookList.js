@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from "react";
-import api from "../services/api";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBooks } from "../actions/bookActions";
 import BookCard from "@/components/shared/bookCard";
 import { toast } from "react-toastify";
 
 export default function BookList() {
-  const [books, setBooks] = useState([]);
-  useEffect(() => {
-    fetchBooks();
-  }, []);
+  const dispatch = useDispatch();
+  const books = useSelector((state) => state.books);
 
-  async function fetchBooks() {
-    try {
-      const response = await api.get("/books");
-      setBooks(response.data);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
+  useEffect(() => {
+    dispatch(fetchBooks());
+  }, [dispatch]);
 
   return (
     <div className="flex flex-wrap justify-start">

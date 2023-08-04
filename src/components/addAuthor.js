@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { AiFillCloseSquare, AiOutlineCloseCircle } from "react-icons/ai";
-import api from "../services/api";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { createAuthor, updateAuthor } from "../actions/authorActions";
 import { toast } from "react-toastify";
 
 export default function AddAuthor({ onClose, initialData }) {
+  const dispatch = useDispatch();
   const isUpdate = !!initialData;
 
   const [formData, setFormData] = useState({
@@ -32,33 +34,15 @@ export default function AddAuthor({ onClose, initialData }) {
     event.preventDefault();
     try {
       if (isUpdate) {
-        await updateAuthor();
+        await dispatch(updateAuthor(initialData._id, formData));
       } else {
-        await createAuthor();
+        await dispatch(createAuthor(formData));
       }
       onClose();
     } catch (error) {
       toast.error(error.message);
     }
   };
-
-  async function createAuthor() {
-    try {
-      const response = await api.post("/author", formData);
-      if (response.data) toast.success("Author Create Successful");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
-
-  async function updateAuthor() {
-    try {
-      const response = await api.put(`/author/${initialData._id}`, formData);
-      if (response.data) toast.success("Author Details Updated");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
 
   return (
     <div>

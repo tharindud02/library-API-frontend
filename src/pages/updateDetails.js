@@ -1,16 +1,20 @@
-import AddAuthor from "@/components/addAuthor";
-import AddBook from "@/components/addBook";
-import api from "../services/api";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBooks, deleteBook } from "../actions/bookActions";
+import { fetchAuthors, deleteAuthor } from "../actions/authorActions";
 import { RiDeleteBinLine, RiEdit2Line } from "react-icons/ri";
 import ConfirmModal from "@/components/shared/confirmModal";
 import { toast } from "react-toastify";
+import AddAuthor from "@/components/addAuthor";
+import AddBook from "@/components/addBook";
 
 export default function UpdateDetails() {
+  const dispatch = useDispatch();
+  const books = useSelector((state) => state.books);
+  const authors = useSelector((state) => state.authors);
+
   const [showPopupAddBook, setShowPopupAddBook] = useState(false);
   const [showPopupAddAuthor, setShowPopupAddAuthor] = useState(false);
-  const [books, setBooks] = useState([]);
-  const [authors, setAuthors] = useState([]);
   const [selectedBookData, setSelectedBookData] = useState();
   const [selectedAuthorData, setSelectedAuthorData] = useState();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -18,9 +22,9 @@ export default function UpdateDetails() {
   const [deleteType, setDeleteType] = useState("");
 
   useEffect(() => {
-    fetchBooks();
-    fetchAuthors();
-  }, []);
+    dispatch(fetchBooks());
+    dispatch(fetchAuthors());
+  }, [dispatch]);
 
   const handleDelete = (type, id) => {
     setDelConfirmMessage(
@@ -34,9 +38,9 @@ export default function UpdateDetails() {
 
   const handleConfirmDelete = () => {
     if (deleteType === "book") {
-      deleteBook(selectedBookData._id);
+      dispatch(deleteBook(selectedBookData._id));
     } else if (deleteType === "author") {
-      deleteAuthor(selectedAuthorData._id);
+      dispatch(deleteAuthor(selectedAuthorData._id));
     }
     setShowConfirmModal(false);
   };
@@ -44,46 +48,6 @@ export default function UpdateDetails() {
   const handleCancelDelete = () => {
     setShowConfirmModal(false);
   };
-
-  async function fetchBooks() {
-    try {
-      const response = await api.get("/books");
-      setBooks(response.data);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
-
-  async function fetchAuthors() {
-    try {
-      const response = await api.get("/authors");
-      setAuthors(response.data);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
-
-  async function deleteBook(id) {
-    try {
-      await api.delete(`/book/${id}`);
-      fetchBooks();
-      setSelectedBookData("");
-      toast.success("Book Deleted");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
-
-  async function deleteAuthor(id) {
-    try {
-      await api.delete(`/author/${id}`);
-      fetchAuthors();
-      setSelectedAuthorData("");
-      toast.success("Author Deleted");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
 
   return (
     <div className="p-4">
@@ -101,7 +65,6 @@ export default function UpdateDetails() {
           Add an Author
         </button>
       </div>
-
       <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-8">
         <div className="flex-grow">
           <h2 className="text-xl font-bold mb-4">Books List</h2>
@@ -172,6 +135,8 @@ export default function UpdateDetails() {
           </ul>
         </div>
       </div>
+
+      {/* Modal for adding a book */}
       {showPopupAddBook && (
         <AddBook
           authors={authors}
@@ -179,20 +144,24 @@ export default function UpdateDetails() {
           onClose={() => {
             setShowPopupAddBook(false);
             setSelectedBookData("");
-            fetchBooks();
+            dispatch(fetchBooks()); // Dispatch action to update books
           }}
         />
       )}
+
+      {/* Modal for adding an author */}
       {showPopupAddAuthor && (
         <AddAuthor
           initialData={selectedAuthorData}
           onClose={() => {
             setShowPopupAddAuthor(false);
             setSelectedAuthorData("");
-            fetchAuthors();
+            dispatch(fetchAuthors()); // Dispatch action to update authors
           }}
         />
       )}
+
+      {/* Confirm modal for delete */}
       {showConfirmModal && (
         <ConfirmModal
           message={delConfirmMessage}

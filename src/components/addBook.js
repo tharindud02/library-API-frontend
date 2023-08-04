@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { AiFillCloseSquare, AiOutlineCloseCircle } from "react-icons/ai";
-import api from "../services/api";
+import React, { useState, useEffect } from "react";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { createBook, updateBook } from "../actions/bookActions"; // Import your action creators
 import { toast } from "react-toastify";
 
 export default function AddBook({ authors, onClose, initialData }) {
+  const dispatch = useDispatch();
+  const isUpdate = !!initialData;
+
   const [formData, setFormData] = useState({
     name: "",
     isbn: "",
@@ -31,38 +35,16 @@ export default function AddBook({ authors, onClose, initialData }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      if (initialData) {
-        await updateBook();
+      if (isUpdate) {
+        await dispatch(updateBook(initialData._id, formData)); // Dispatch updateBook action
       } else {
-        await createBook();
+        await dispatch(createBook(formData)); // Dispatch createBook action
       }
       onClose();
     } catch (error) {
       toast.error(error.message);
     }
   };
-
-  async function createBook() {
-    try {
-      const response = await api.post("/book", formData);
-      if (response.data) {
-        toast.success("Book Created Successful");
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
-
-  async function updateBook() {
-    try {
-      const response = await api.put(`/book/${initialData._id}`, formData);
-      if (response.data) {
-        toast.success("Book Details Updated");
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
 
   return (
     <div>
