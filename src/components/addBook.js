@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { createBook, updateBook } from "../actions/bookActions"; // Import your action creators
+import { createBook, updateBook } from "../actions/bookActions";
 import { toast } from "react-toastify";
 
 export default function AddBook({ authors, onClose, initialData }) {
@@ -36,9 +36,9 @@ export default function AddBook({ authors, onClose, initialData }) {
     event.preventDefault();
     try {
       if (isUpdate) {
-        await dispatch(updateBook(initialData._id, formData)); // Dispatch updateBook action
+        await dispatch(updateBook(initialData._id, formData));
       } else {
-        await dispatch(createBook(formData)); // Dispatch createBook action
+        await dispatch(createBook(formData));
       }
       onClose();
     } catch (error) {

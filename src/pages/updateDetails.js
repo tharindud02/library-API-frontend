@@ -136,7 +136,6 @@ export default function UpdateDetails() {
         </div>
       </div>
 
-      {/* Modal for adding a book */}
       {showPopupAddBook && (
         <AddBook
           authors={authors}
@@ -144,24 +143,22 @@ export default function UpdateDetails() {
           onClose={() => {
             setShowPopupAddBook(false);
             setSelectedBookData("");
-            dispatch(fetchBooks()); // Dispatch action to update books
+            dispatch(fetchBooks());
           }}
         />
       )}
 
-      {/* Modal for adding an author */}
       {showPopupAddAuthor && (
         <AddAuthor
           initialData={selectedAuthorData}
           onClose={() => {
             setShowPopupAddAuthor(false);
             setSelectedAuthorData("");
-            dispatch(fetchAuthors()); // Dispatch action to update authors
+            dispatch(fetchAuthors());
           }}
         />
       )}
 
-      {/* Confirm modal for delete */}
       {showConfirmModal && (
         <ConfirmModal
           message={delConfirmMessage}

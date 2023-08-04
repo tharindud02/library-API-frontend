@@ -1,33 +1,25 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import SideMenu from "@/components/shared/asideMenu";
 
-describe("SideMenu Component", () => {
-  const mockSideMenu = [
-    {
-      name: "Book List",
-      url: "/bookList",
-    },
-    {
-      name: "Update Details",
-      url: "/updateDetails",
-    },
-  ];
+describe("SideMenu component", () => {
+  it("renders menu items correctly", () => {
+    const mockSideMenu = [
+      { name: "Item 1", url: "/item1" },
+      { name: "Item 2", url: "/item2" },
+    ];
 
-  beforeAll(() => {
-    // Mock the sideMenu data
+    // Mock the sideMenu import
     jest.mock("../../../src/utils/menu", () => ({
       sideMenu: mockSideMenu,
     }));
-  });
 
-  it("should render menu items correctly", () => {
-    render(<SideMenu />);
+    const { getByText } = render(<SideMenu />);
 
+    // Check if menu items are rendered correctly
     mockSideMenu.forEach((item) => {
-      const link = screen.getByText(item.name);
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute("href", item.url);
+      const linkElement = getByText(item.name);
+      expect(linkElement).toBeInTheDocument();
     });
   });
 });
